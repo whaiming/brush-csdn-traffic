@@ -1,6 +1,5 @@
 package whm.brush.csdn;
 
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
@@ -9,6 +8,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static whm.brush.csdn.JsoupGetArticleUrl.getDoc;
 import static whm.brush.csdn.JsoupGetArticleUrl.getUrl;
 
 
@@ -25,14 +25,7 @@ public class JsoupGetIp {
         List<AgencyIp> ipList = null;
         try {
             //1.向ip代理地址发起get请求，拿到代理的ip
-            Document doc = Jsoup.connect(url)
-                    .header("Accept", "*/*")
-                    .header("Accept-Encoding", "gzip, deflate")
-                    .header("Accept-Language", "zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3")
-                    .header("Referer", "https://www.baidu.com/")
-                    .header("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:48.0) Gecko/20100101 Firefox/48.0")
-                    .timeout(3000)
-                    .get();
+            Document doc = getDoc(url);
 
             //2,将得到的ip地址解析除字符串
             String ipStr = doc.body().text().trim().toString();
@@ -85,15 +78,7 @@ public class JsoupGetIp {
                 System.getProperties().setProperty("http.proxyPort", AgencyIp.getPort());
 
                 try {
-                    Document doc = Jsoup.connect(blogUrl)
-                            .header("Accept", "*/*")
-                            .header("Accept-Encoding", "gzip, deflate")
-                            .header("Accept-Language", "zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3")
-                            .header("Referer", "https://www.baidu.com/")
-                            .header("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:48.0) Gecko/20100101 Firefox/48.0")
-//                            .cookie("auth", "token")
-                            .timeout(3000)
-                            .get();
+                    Document doc = getDoc(blogUrl);
                     if(doc != null) {
                         count++;
                         System.out.println("成功刷新次数: " + count);

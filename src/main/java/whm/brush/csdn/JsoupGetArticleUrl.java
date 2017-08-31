@@ -23,15 +23,7 @@ public class JsoupGetArticleUrl {
     public static List<String> getUrl(){
         List<String> urls = new ArrayList<String>();
         try {
-            Document doc = Jsoup.connect("http://blog.csdn.net/w980994974")
-                    .header("Accept", "*/*")
-                    .header("Accept-Encoding", "gzip, deflate")
-                    .header("Accept-Language", "zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3")
-                    .header("Referer", "https://www.baidu.com/")
-                    .header("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:48.0) Gecko/20100101 Firefox/48.0")
-//                    .cookie("auth", "token")
-                    .timeout(3000)
-                    .get();
+            Document doc = getDoc("http://blog.csdn.net/w980994974");
             Element body = doc.body();
             Pattern compile = Pattern.compile("/w980994974/article/details/\\d{8}$");
             Elements es=body.select("a");
@@ -53,5 +45,17 @@ public class JsoupGetArticleUrl {
             e.printStackTrace();
         }
         return urls;
+    }
+
+    public static Document getDoc(String url) throws IOException {
+        return Jsoup.connect(url)
+         .header("Accept", "*/*")
+                .header("Accept-Encoding", "gzip, deflate")
+                .header("Accept-Language", "zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3")
+                .header("Referer", "https://www.baidu.com/")
+                .header("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:48.0) Gecko/20100101 Firefox/48.0")
+//                    .cookie("auth", "token")
+                .timeout(3000)
+                .get();
     }
 }
