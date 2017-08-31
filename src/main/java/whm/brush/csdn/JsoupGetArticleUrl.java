@@ -47,6 +47,12 @@ public class JsoupGetArticleUrl {
         return urls;
     }
 
+    /**
+     * 模拟浏览器行为的请求头获取Document
+     * @param url
+     * @return
+     * @throws IOException
+     */
     public static Document getDoc(String url) throws IOException {
         return Jsoup.connect(url)
          .header("Accept", "*/*")
