@@ -26,8 +26,11 @@ public class JsoupGetIp {
         try {
             //1.向ip代理地址发起get请求，拿到代理的ip
             Document doc = Jsoup.connect(url)
-                    .userAgent("Mozilla")
-                    .cookie("auth", "token")
+                    .header("Accept", "*/*")
+                    .header("Accept-Encoding", "gzip, deflate")
+                    .header("Accept-Language", "zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3")
+                    .header("Referer", "https://www.baidu.com/")
+                    .header("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:48.0) Gecko/20100101 Firefox/48.0")
                     .timeout(3000)
                     .get();
 
@@ -36,7 +39,7 @@ public class JsoupGetIp {
 
             ipList = new ArrayList<AgencyIp>();
 
-            List<String> ips = new ArrayList<>();
+            List<String> ips = new ArrayList<String>();
             String lines[] = ipStr.split("\r\n");
             for(int i=0; i<lines.length;i++){
                 //out.println(lines[i]+"<br />");
@@ -83,9 +86,13 @@ public class JsoupGetIp {
 
                 try {
                     Document doc = Jsoup.connect(blogUrl)
-                            .userAgent("Mozilla")
-                            .cookie("auth", "token")
-                            .timeout(1000)
+                            .header("Accept", "*/*")
+                            .header("Accept-Encoding", "gzip, deflate")
+                            .header("Accept-Language", "zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3")
+                            .header("Referer", "https://www.baidu.com/")
+                            .header("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:48.0) Gecko/20100101 Firefox/48.0")
+//                            .cookie("auth", "token")
+                            .timeout(3000)
                             .get();
                     if(doc != null) {
                         count++;
@@ -102,11 +109,11 @@ public class JsoupGetIp {
     public static void main(String[] args) {
         //1.想http代理地址api发起请求，获得想要的代理ip地址
         String url = "http://www.xicidaili.com/nn/";
-        List<AgencyIp> ipList = getIp(url);
+        final List<AgencyIp> ipList = getIp(url);
         List<String> urls = getUrl();
-        for (String u:urls){
+        for (final String u:urls){
             new Thread(new Runnable() {
-                @Override
+
                 public void run() {
                     System.out.println("文章地址:" + u);
                     visit(u,ipList);
