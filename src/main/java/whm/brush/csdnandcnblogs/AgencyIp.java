@@ -1,4 +1,4 @@
-package whm.brush.csdn;
+package whm.brush.csdnandcnblogs;
 
 /**
  * Created by whm on 2017/8/31.
@@ -7,6 +7,14 @@ public class AgencyIp {
     private String address;
 
     private String port;
+
+    public AgencyIp() {
+    }
+
+    public AgencyIp(String address, String port) {
+        this.address = address;
+        this.port = port;
+    }
 
     public String getAddress() {
         return address;

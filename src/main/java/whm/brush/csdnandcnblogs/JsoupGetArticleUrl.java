@@ -1,4 +1,4 @@
-package whm.brush.csdn;
+package whm.brush.csdnandcnblogs;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -20,7 +20,7 @@ public class JsoupGetArticleUrl {
      * 获取所有个人博客地址
      * @return
      */
-    public static List<String> getUrl(){
+    public static List<String> getCsdnBlogsUrl(){
         List<String> urls = new ArrayList<String>();
         try {
             Document doc = getDoc("http://blog.csdn.net/w980994974");
@@ -37,9 +37,6 @@ public class JsoupGetArticleUrl {
                     set.add("http://blog.csdn.net" + e.attr("href"));
                 }
             }
-            for( Iterator   it = set.iterator();  it.hasNext(); ){
-                System.out.println("value="+it.next().toString());
-            }
             urls.addAll(set);
         } catch (IOException e) {
             e.printStackTrace();
@@ -54,14 +51,25 @@ public class JsoupGetArticleUrl {
      * @throws IOException
      */
     public static Document getDoc(String url) throws IOException {
+        /**
+         * 在爬之前最好看一下浏览器访问目标网站的Request Header信息，然后进行模仿
+         */
         return Jsoup.connect(url)
-         .header("Accept", "*/*")
+//                .header("accept", "application/json, text/plain,*/*")
+//                .header("Accept-Encoding", "gzip, deflate,br")
+//                .header("Accept-Language", "zh-CN,zh;q=0.8")//,en-US;q=0.5,en;q=0.3
+//                .header("Referer", "https://www.baidu.com/")
+                .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
                 .header("Accept-Encoding", "gzip, deflate")
-                .header("Accept-Language", "zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3")
-                .header("Referer", "https://www.baidu.com/")
-                .header("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:48.0) Gecko/20100101 Firefox/48.0")
-//                    .cookie("auth", "token")
-                .timeout(3000)
+                .header("Accept-Language", "zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3")//,en-US;q=0.5,en;q=0.3
+                .header("Cache-Control","max-age=0")
+                .header("Connection","keep-alive")
+                .header("Host", "www.cnblogs.com")
+                .header("Referer","http://www.cnblogs.com/WangHaiMing/")
+                .header("Upgrade-Insecure-Requests","1")
+                .header("User-Agent","Mozilla/5.0 (Windows NT 10.0; WOW64; rv:55.0) Gecko/20100101 Firefox/55.0")// "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:48.0) Gecko/20100101 Firefox/48.0
+                .header("Cookie", "_ga=GA1.2.727269871.1498415016")
+                .timeout(5000)
                 .get();
     }
 }
